@@ -1,0 +1,39 @@
+# Develop a simple image encryption tool using pixel manipulation.
+# You can perform operations like swapping  pixel values or appling a basic mathematical operation to each pixel.
+# allow users to encrypt and decrypt images
+
+from PIL import Image
+def encrypt_decrypt_image(input_image_path, output_image_path, key, mode):
+    try:
+    
+        image = Image.open(input_image_path)
+        width, height = image.size
+
+        result_image = Image.new(mode=image.mode, size=(width, height))
+
+        pixels = image.load()
+        result_pixels = result_image.load()
+        
+        # Process each pixel
+        for i in range(width):
+            for j in range(height):
+                # XOR operation for encryption/decryption
+                result_pixels[i, j] = tuple(p ^ key for p in pixels[i, j])
+        
+        # Save the result image
+        result_image.save(output_image_path)
+        print(f"Image {mode}ed and saved as {output_image_path}")
+    
+    except Exception as e:
+        print(f"Error: {e}")
+
+input_image = "img1.png"
+encrypted_image = "encrypted_image.png"
+decrypted_image = "decrypted_image.png"
+key = 124
+
+# Encrypt image
+encrypt_decrypt_image(input_image, encrypted_image, key, "encrypt")
+
+# Decrypt image
+encrypt_decrypt_image(encrypted_image, decrypted_image, key, "decrypt")
